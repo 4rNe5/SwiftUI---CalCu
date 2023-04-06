@@ -87,7 +87,7 @@ enum ButtonType: String {
             [.seventh, .eighth, .nineth, .multiple],
             [.forth, .fifth, .sixth, .minus],
             [.first, .second, .third, .plus],
-            [.zero, .zero, .dot, .equal]
+            [.zero, .dot, .equal]
         ]
         
         var body: some View {
@@ -110,13 +110,34 @@ enum ButtonType: String {
                             ForEach(line, id: \.self) { item in
                                 Button {
                                     if totalNumber == "0" {
-                                        totalNumber = "7"
+                                        
+                                        if item == .clear {
+                                            totalNumber = "0"
+                                        } else if item == .plus ||
+                                                  item == .minus ||
+                                                  item == .multiple ||
+                                                  item == .devide {
+                                            totalNumber = "Error"
+                                        }
+                                        else {
+                                            totalNumber = item.ButtonDisplayName
+                                        }
                                     } else {
-                                        totalNumber += "7"
+                                        if item == .clear {
+                                            totalNumber = "0"
+                                        }else if item == .plus ||
+                                                 item == .minus ||
+                                                 item == .multiple ||
+                                                 item == .devide {
+                                           totalNumber = "Error"
+                                       }
+                                        else {
+                                            totalNumber += item.ButtonDisplayName
+                                        }
                                     }
                                 }label: {
                                     Text (item.ButtonDisplayName)
-                                        .frame(width: 80,
+                                        .frame(width: item == .some(.zero) ? 160 : 80,
                                                height: 80)
                                         .background(item.backgroundColor)
                                         .cornerRadius (40)
