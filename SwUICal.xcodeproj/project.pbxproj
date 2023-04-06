@@ -19,6 +19,7 @@
 		708A80A329D6521700CC23B5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		708A80A529D6521700CC23B5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		708A80A829D6521700CC23B5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		70FF2F4D29DED86A00D86F64 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +54,7 @@
 			children = (
 				708A80A129D6521700CC23B5 /* SwUICalApp.swift */,
 				708A80A329D6521700CC23B5 /* ContentView.swift */,
+				70FF2F4D29DED86A00D86F64 /* README.md */,
 				708A80A529D6521700CC23B5 /* Assets.xcassets */,
 				708A80A729D6521700CC23B5 /* Preview Content */,
 			);
