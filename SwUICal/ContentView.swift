@@ -81,6 +81,7 @@ enum ButtonType: String {
     struct ContentView: View {
         
         @State private var totalNumber: String = "0"
+        @State var tempNumber: Int = 0
         
         private let buttonData: [[ButtonType]] = [
             [.clear, .opposite, .percent, .devide],
@@ -125,11 +126,11 @@ enum ButtonType: String {
                                     } else {
                                         if item == .clear {
                                             totalNumber = "0"
-                                        }else if item == .plus ||
-                                                 item == .minus ||
-                                                 item == .multiple ||
-                                                 item == .devide {
-                                           totalNumber = "Error"
+                                        } else if item == .plus {
+                                            tempNumber = Int(totalNumber) ?? 0
+                                            //숫자 저장
+                                            //더하기
+                                            //남은 숫자 초기화
                                        }
                                         else {
                                             totalNumber += item.ButtonDisplayName
