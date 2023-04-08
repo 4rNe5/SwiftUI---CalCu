@@ -1,4 +1,4 @@
-#  Fucking Great Calculator (Based on Swift & SwiftUI)
+#  **__Fucking__ Great Calculator** (Based on **__Swift & SwiftUI__**)
 made by 4rNe5 (by Study)
 
 
