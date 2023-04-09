@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum ButtonType: String {
+enum ButtonType: String { // 열거형 'ButtonType' 선언 (각 버튼의 타입과 표시할 문자열, 배경색, 전경색을 나타냄)
     case first, second, third, forth, fifth, sixth, seventh, eighth, nineth, zero
     case dot, equal, plus, minus, multiple, devide
     case percent, opposite, clear
@@ -77,74 +77,93 @@ enum ButtonType: String {
         }
     }
 }
+
+struct ContentView: View { // 뷰 선언 (계산기 앱의 UI를 구성, 버튼을 누를 때마다 totalNumber 변수에 값을 업데이트)
     
-    struct ContentView: View {
-        
-        @State private var totalNumber: String = "0"
-        @State var tempNumber: Int = 0
-        
-        private let buttonData: [[ButtonType]] = [
-            [.clear, .opposite, .percent, .devide],
-            [.seventh, .eighth, .nineth, .multiple],
-            [.forth, .fifth, .sixth, .minus],
-            [.first, .second, .third, .plus],
-            [.zero, .dot, .equal]
-        ]
-        
-        var body: some View {
-            ZStack{
-                Color.black.ignoresSafeArea()
+    @State private var totalNumber: String = "0"
+    @State var tempNumber: Int = 0
+    @State var operatorType: ButtonType = .clear
+    
+    private let buttonData: [[ButtonType]] = [ // 2차원 buttonData 배열은 계산기 버튼의 레이아웃을 정의.
+        [.clear, .opposite, .percent, .devide],
+        [.seventh, .eighth, .nineth, .multiple],
+        [.forth, .fifth, .sixth, .minus],
+        [.first, .second, .third, .plus],
+        [.zero, .dot, .equal]
+    ]
+    
+    var body: some View {
+        ZStack{
+            Color.black.ignoresSafeArea()
+            
+            VStack{
+                Spacer()
                 
-                VStack{
+                HStack{
                     Spacer()
-                    
-                    HStack{
-                        Spacer()
-                        Text(totalNumber)
-                            .padding()
-                            .font(.system(size: 73 ))
-                            .foregroundColor(.white)
-                    }
-                    
-                    ForEach (buttonData, id: \.self) { line in
-                        HStack {
-                            ForEach(line, id: \.self) { item in
-                                Button {
-                                    if totalNumber == "0" {
+                    Text(totalNumber)
+                        .padding()
+                        .font(.system(size: 73 ))
+                        .foregroundColor(.white)
+                }
+                
+                ForEach (buttonData, id: \.self) { line in
+                    HStack {
+                        ForEach(line, id: \.self) { item in
+                            Button {
+                                if totalNumber == "0" {
+                                    
+                                    if item == .clear {
+                                        totalNumber = "0"
+                                    } else if item == .plus ||
+                                                item == .minus ||
+                                                item == .multiple ||
+                                                item == .devide {
+                                        totalNumber = "Error"
+                                    }
+                                    else {
+                                        totalNumber = item.ButtonDisplayName
+                                    }
+                                } else {
+                                    if item == .clear {
+                                        totalNumber = "0"
+                                    } else if item == .plus {
+                                        tempNumber = Int(totalNumber) ?? 0
+                                        operatorType = .plus
+                                        totalNumber = "0"
                                         
-                                        if item == .clear {
-                                            totalNumber = "0"
-                                        } else if item == .plus ||
-                                                  item == .minus ||
-                                                  item == .multiple ||
-                                                  item == .devide {
-                                            totalNumber = "Error"
-                                        }
-                                        else {
-                                            totalNumber = item.ButtonDisplayName
-                                        }
-                                    } else {
-                                        if item == .clear {
-                                            totalNumber = "0"
-                                        } else if item == .plus {
-                                            tempNumber = Int(totalNumber) ?? 0
-                                            //숫자 저장
-                                            //더하기
-                                            //남은 숫자 초기화
-                                       }
-                                        else {
-                                            totalNumber += item.ButtonDisplayName
+                                    } else if item == .multiple {
+                                        tempNumber = Int(totalNumber) ?? 0
+                                        operatorType = .multiple
+                                        totalNumber = "0"
+                                        
+                                    } else if item == .minus {
+                                        tempNumber = Int(totalNumber) ?? 0
+                                        operatorType = .minus
+                                        totalNumber = "0"
+                                        
+                                    } else if item == .equal {
+                                        
+                                        if operatorType == .plus {
+                                            totalNumber = String((Int(totalNumber) ?? 0) + tempNumber)
+                                        }else if operatorType == .multiple {
+                                            totalNumber = String((Int(totalNumber) ?? 0) * tempNumber)
+                                        }else if operatorType == .minus {
+                                            totalNumber = String(tempNumber - (Int(totalNumber) ?? 0))
                                         }
                                     }
-                                }label: {
-                                    Text (item.ButtonDisplayName)
-                                        .frame(width: item == .some(.zero) ? 160 : 80,
-                                               height: 80)
-                                        .background(item.backgroundColor)
-                                        .cornerRadius (40)
-                                        .foregroundColor (item.forgroundColor)
-                                        .font (.system(size: 33))
+                                    else {
+                                        totalNumber += item.ButtonDisplayName
+                                    }
                                 }
+                            }label: {
+                                Text (item.ButtonDisplayName)
+                                    .frame(width: item == .some(.zero) ? 160 : 80,
+                                           height: 80)
+                                    .background(item.backgroundColor)
+                                    .cornerRadius (40)
+                                    .foregroundColor (item.forgroundColor)
+                                    .font (.system(size: 33))
                             }
                         }
                     }
@@ -152,10 +171,11 @@ enum ButtonType: String {
             }
         }
     }
-    
-    
-    struct ContentView_Previews: PreviewProvider {
-        static var previews: some View{
-            ContentView()
-        }
+}
+
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View{
+        ContentView()
     }
+}
