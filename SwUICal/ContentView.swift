@@ -4,6 +4,7 @@
 //
 //  Created by Hyun on 2023/03/31.
 //
+// 추가할 개선점 : 나누기 구현, string extention으로 콤마 추가, 3개 숫자 이상을 사용하는 사칙연산 구현, 연산자 우선순위, 가로 모드
 
 import SwiftUI
 
@@ -158,8 +159,8 @@ struct ContentView: View { // 뷰 선언 (계산기 앱의 UI를 구성, 버튼�
                                 }
                             }label: {
                                 Text (item.ButtonDisplayName)
-                                    .frame(width: item == .some(.zero) ? 160 : 80,
-                                           height: 80)
+                                    .bold()
+                                    .frame(width: calculateButtonWidth(button: item), height: calculateButtonHeight(button: item))
                                     .background(item.backgroundColor)
                                     .cornerRadius (40)
                                     .foregroundColor (item.forgroundColor)
@@ -170,6 +171,19 @@ struct ContentView: View { // 뷰 선언 (계산기 앱의 UI를 구성, 버튼�
                 }
             }
         }
+    }
+    
+    private func calculateButtonWidth(button buttonType: ButtonType ) -> CGFloat {
+        switch buttonType {
+        case .zero:
+            return (UIScreen.main.bounds.width - 5*10) / 4 * 2
+        default:
+            return ((UIScreen.main.bounds.width - 5*10) / 4)
+        }
+    }
+    
+    private func calculateButtonHeight(button: ButtonType ) -> CGFloat {
+            return ((UIScreen.main.bounds.width - 5*10) / 4)
     }
 }
 
