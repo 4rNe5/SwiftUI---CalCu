@@ -4,7 +4,7 @@
 //
 //  Created by Hyun on 2023/03/31.
 //
-// 추가할 개선점 : 나누기 구현, string extention으로 콤마 추가, 3개 숫자 이상을 사용하는 사칙연산 구현, 연산자 우선순위, 가로 모드
+// 추가할 개선점 : 3개 숫자 이상을 사용하는 사칙연산 구현, 연산자 우선순위
 
 import SwiftUI
 
@@ -79,6 +79,19 @@ enum ButtonType: String { // 열거형 'ButtonType' 선언 (각 버튼의 타입
     }
 }
 
+extension String {
+    func addComma() -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.groupingSeparator = ","
+        formatter.groupingSize = 3
+        if let number = Double(self) {
+            return formatter.string(from: NSNumber(value: number)) ?? self
+        }
+        return self
+    }
+}
+
 struct ContentView: View { // 뷰 선언 (계산기 앱의 UI를 구성, 버튼을 누를 때마다 totalNumber 변수에 값을 업데이트)
     
     @State private var totalNumber: String = "0"
@@ -102,7 +115,7 @@ struct ContentView: View { // 뷰 선언 (계산기 앱의 UI를 구성, 버튼�
                 
                 HStack{
                     Spacer()
-                    Text(totalNumber)
+                    Text(totalNumber.addComma())
                         .padding()
                         .font(.system(size: 73 ))
                         .foregroundColor(.white)
@@ -138,6 +151,11 @@ struct ContentView: View { // 뷰 선언 (계산기 앱의 UI를 구성, 버튼�
                                         operatorType = .multiple
                                         totalNumber = "0"
                                         
+                                    }  else if item == .devide {
+                                        tempNumber = Int(totalNumber) ?? 0
+                                        operatorType = .devide
+                                        totalNumber = "0"
+                                        
                                     } else if item == .minus {
                                         tempNumber = Int(totalNumber) ?? 0
                                         operatorType = .minus
@@ -149,9 +167,18 @@ struct ContentView: View { // 뷰 선언 (계산기 앱의 UI를 구성, 버튼�
                                             totalNumber = String((Int(totalNumber) ?? 0) + tempNumber)
                                         }else if operatorType == .multiple {
                                             totalNumber = String((Int(totalNumber) ?? 0) * tempNumber)
-                                        }else if operatorType == .minus {
+                                        }
+                                        else if operatorType == .devide {
+                                            if tempNumber == 0 || totalNumber == "0" {
+                                                totalNumber = "Error"
+                                            } else {
+                                                totalNumber = String((Int(tempNumber) ?? 0) / (Int(totalNumber) ?? 0))
+                                            }
+                                        }
+                                        else if operatorType == .minus {
                                             totalNumber = String(tempNumber - (Int(totalNumber) ?? 0))
                                         }
+                                        
                                     }
                                     else {
                                         totalNumber += item.ButtonDisplayName
