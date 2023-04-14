@@ -172,7 +172,8 @@ struct ContentView: View { // 뷰 선언 (계산기 앱의 UI를 구성, 버튼�
                                             if tempNumber == 0 || totalNumber == "0" {
                                                 totalNumber = "Error"
                                             } else {
-                                                totalNumber = String((Int(tempNumber) ?? 0) / (Int(totalNumber) ?? 0))
+                                                totalNumber = String((Int(tempNumber) ) / (Int(totalNumber) ?? 0))
+                                                //(Int(tempNumber) ?? 0)이 원본 코드.
                                             }
                                         }
                                         else if operatorType == .minus {
